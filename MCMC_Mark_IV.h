@@ -248,7 +248,7 @@ int MCMC_SS::Update_SS(vector<GST>& UKnew,  vector<GST>& UKtnew,
       double u1=0;
       double u2 = 0;
       double JR = 1.0;
-      double alpha = 5e-5;
+      double alpha = 5e-5 ; controls the size of the Birth and Death temperature steps.
       double ll = 0;
       double wminus =0.0, wplus = 0.0;int births =0;
       int deaths = 0;
