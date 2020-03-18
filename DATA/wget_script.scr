@@ -1,0 +1,24 @@
+!#/bin/ksh
+
+rm *.html
+root="http://geothermal.earth.lsa.umich.edu/DATA/"
+ext=".html"
+for i in {1..1012}
+do
+   echo $i
+
+
+
+   name=`sed -n ${i}p glob_names.txt`
+   echo $name
+   name_nows="$(echo -e "${name}" | tr -d '[:space:]')"
+  
+   
+   echo ${root}${name_nows}${ext}
+
+   wget ${root}${name_nows}${ext}
+
+   done
+mv *.html html -v
+   
+   

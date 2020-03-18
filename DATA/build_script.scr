@@ -1,0 +1,90 @@
+!#/bin/ksh
+
+
+cd html
+sites=`ls *.html`
+cd ..
+
+mkdir NH
+mkdir NH_trop
+mkdir SH
+
+
+
+for i in {1..1012}
+do
+
+   site=`sed -n ${i}p glob_names.txt`
+   echo $name
+
+   lon=`sed -n ${i}p glob_lon.txt`
+   lat=`sed -n ${i}p glob_lat.txt`
+
+pwd
+site=`echo $site | sed -e 's/.html//g'`
+echo $site
+
+cp html/${site}.html . -v
+
+echo $lat
+
+
+
+#if [ "$lat" -ge "30" ]; then
+   out_dir="NH/"
+#elif [ "$lat" -ge "0" && $lat -lt "30" ]; then
+#   out_dir="NH_trop/"
+#else
+#   out_dir="SH/"
+#fi
+
+
+mkdir ${out_dir}"YEAR"
+mkdir ${out_dir}"TEQ"
+mkdir ${out_dir}"COND"
+mkdir ${out_dir}"DTDZ"
+mkdir ${out_dir}"TZ"
+
+site=$(echo "$site" | sed 's,.html,,g')
+
+echo $site
+
+
+# Remove the first 9 lines of text
+sed -i -e '1,9d'  ${site}.html
+
+# Get the date
+sed '1q;d' ${site}.html | cut -c 28-33
+sed '1q;d' ${site}.html | cut -c 28-33   >${site}.year.txt
+
+# Get the Teq
+sed '2q;d' ${site}.html | cut -c 46-50
+sed '2q;d' ${site}.html | cut -c 46-50  >${site}.teq.txt
+# Get the cond
+sed '3q;d' ${site}.html | cut -c 66-70
+sed '3q;d' ${site}.html | cut -c 66-70  >${site}.conductivity.txt
+# Get the dTdz
+sed '4q;d' ${site}.html | cut -c 55-60
+sed '4q;d' ${site}.html | cut -c 55-60  >${site}.dTdz.txt
+
+# Remove the last bit of text
+sed -e :a -e '$d;N;2,8ba' -e 'P;D' ${site}.html >${site}.txt
+
+
+
+# Remove the first 5 lines of text
+sed -i -e '1,5d'  ${site}.txt
+cp ${site}.txt ${site}.Tz.txt
+nlines=`less ${site}.Tz.txt | wc -l`
+echo $nlines >${site}.size.txt
+
+
+mv -v ${site}.year.txt ${out_dir}"YEAR/"
+mv ${site}.teq.txt ${out_dir}"TEQ/"
+mv ${site}.conductivity.txt ${out_dir}"COND/"
+mv ${site}.dTdz.txt ${out_dir}"DTDZ/"
+mv ${site}.txt ${out_dir}"TZ/"
+mv ${site}.size.txt ${out_dir}"TZ/"
+
+
+done
