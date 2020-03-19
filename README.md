@@ -68,3 +68,7 @@ Currently set up to run 1012 borehole profiles across 173 partitions. On a singl
 5. Analysing the output
 This will require matlab code in the matlab/ directory.
 
+
+
+First release 19.3.2020:
+[![DOI](https://zenodo.org/badge/248197045.svg)](https://zenodo.org/badge/latestdoi/248197045)
